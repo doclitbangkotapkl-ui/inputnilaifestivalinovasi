@@ -230,7 +230,6 @@
       line-height: 1.25;
     }
 
-    /* Tulisan bobot diperbesar */
     .kriteria-bobot {
       background: #fee2e2;
       color: #991b1b;
@@ -334,7 +333,6 @@
       cursor: pointer;
     }
 
-    /* NOTIFIKASI MERAH DI TENGAH LAYAR */
     .red-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -400,7 +398,6 @@
   </style>
 </head>
 <body>
-  <!-- MODAL NOTIFIKASI MERAH DI TENGAH -->
   <div id="redModal" class="red-modal-backdrop" onclick="closeRedModal()">
     <div class="red-modal-box" onclick="event.stopPropagation()">
       <div class="red-modal-title">PERHATIAN</div>
@@ -614,6 +611,13 @@
         return;
       }
 
+      if (!API_URL || API_URL.includes('GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT_ANDA')) {
+        const errText = 'API_URL di index.html belum diisi dengan URL /exec Apps Script.';
+        statusMsg.textContent = errText;
+        showRedModal(errText);
+        return;
+      }
+
       document.getElementById('formCard').style.display = 'none';
       document.getElementById('summaryCard').style.display = 'none';
       statusMsg.textContent = 'Memuat data juri dari spreadsheet...';
@@ -634,8 +638,9 @@
         setupTabs(res.akses);
       } catch (err) {
         selectJuri.value = selectJuri.dataset.prevJuri || '';
-        statusMsg.textContent = 'Gagal memuat data: ' + err.message;
-        showRedModal('Gagal memuat data juri: ' + err.message);
+        const errMsg = 'Gagal memuat data juri: ' + err.message;
+        statusMsg.textContent = errMsg;
+        showRedModal(errMsg);
       }
     }
 
@@ -896,4 +901,16 @@
     }
 
     function hideAlert() {
-      const box = document.getElement
+      const box = document.getElementById('alertBox');
+      box.className = 'alert';
+      box.textContent = '';
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
