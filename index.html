@@ -39,21 +39,82 @@
     .header {
       background: linear-gradient(90deg, #991b1b 0%, #b91c1c 100%);
       color: #fff;
-      padding: 20px 28px;
+      padding: 18px 26px;
       border-radius: 12px;
       margin-bottom: 18px;
       box-shadow: 0 4px 12px rgba(153, 27, 27, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .header h1 {
+    .header-left h1 {
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 4px;
     }
 
-    .header p {
+    .header-left p {
       font-size: 13px;
       color: #fecaca;
+    }
+
+    .user-box {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-box.show {
+      display: flex;
+    }
+
+    .user-meta {
+      text-align: right;
+    }
+
+    .user-meta-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+      max-width: 280px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-logout {
+      background: #ffffff;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-logout:hover {
+      background: #fee2e2;
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 2px solid #fecaca;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
     }
 
     .card {
@@ -408,13 +469,31 @@
 
   <div class="container">
     <div class="header">
-      <h1>Form Input Penilaian Juri — Festival Inovasi</h1>
-      <p id="statusMsg">Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian (Nilai 1 - 10)</p>
+      <div class="header-left">
+        <h1>Form Input Penilaian Juri — Festival Inovasi</h1>
+        <p id="statusMsg">Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian (Nilai 1 - 10)</p>
+      </div>
+
+      <div id="userBox" class="user-box">
+        <div class="user-meta">
+          <div id="headerUserName" class="user-meta-label">Nama user</div>
+          <button type="button" class="btn-logout" onclick="logoutUser()">
+            <span>&#128273;</span>
+            <span>Logout</span>
+          </button>
+        </div>
+        <div class="user-avatar" title="User Juri">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" fill="#1e293b"/>
+            <path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" fill="#2563eb"/>
+          </svg>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
+    <div id="selectorCard" class="card">
       <div class="form-grid">
-        <div>
+        <div id="juriSelectorWrap">
           <label for="selectJuri">Pilih Nama Juri</label>
           <select id="selectJuri" onchange="onJuriChange()">
             <option value="">-- Pilih Juri --</option>
@@ -549,6 +628,32 @@
       return true;
     }
 
+    function logoutUser() {
+      if (blockIfUnsaved('Nilai inovasi saat ini belum disimpan! Simpan nilai dulu sebelum logout.')) {
+        return;
+      }
+
+      currentData = null;
+      activeTipe = '';
+      activePesertaIdx = 0;
+      setUnsavedState(false);
+      hideAlert();
+
+      const selectJuri = document.getElementById('selectJuri');
+      selectJuri.value = '';
+      selectJuri.dataset.prevJuri = '';
+
+      document.getElementById('headerUserName').textContent = 'Nama user';
+      document.getElementById('userBox').classList.remove('show');
+      document.getElementById('juriSelectorWrap').style.display = 'block';
+      document.getElementById('pesertaSelectorWrap').style.display = 'none';
+      document.getElementById('tabContainer').style.display = 'none';
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('summaryCard').style.display = 'none';
+      document.getElementById('statusMsg').textContent =
+        'Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian (Nilai 1 - 10)';
+    }
+
     function formatWaktuBersih(waktuStr) {
       if (!waktuStr) return '-';
       const match = String(waktuStr).match(/\b(\d{1,2}:\d{2})\b/g);
@@ -602,12 +707,7 @@
       hideAlert();
 
       if (!juriId) {
-        selectJuri.dataset.prevJuri = '';
-        document.getElementById('pesertaSelectorWrap').style.display = 'none';
-        document.getElementById('tabContainer').style.display = 'none';
-        document.getElementById('formCard').style.display = 'none';
-        document.getElementById('summaryCard').style.display = 'none';
-        statusMsg.textContent = 'Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian (Nilai 1 - 10)';
+        logoutUser();
         return;
       }
 
@@ -632,9 +732,18 @@
           throw new Error(res.error || 'Gagal memuat data juri');
         }
 
+        const selectedOptionText = selectJuri.options[selectJuri.selectedIndex]?.text || '';
+        const namaTampil = res.nama || selectedOptionText || 'Nama user';
+
         selectJuri.dataset.prevJuri = juriId;
         currentData = res;
-        statusMsg.textContent = 'Terhubung sebagai: ' + res.nama;
+        statusMsg.textContent = 'Terhubung sebagai: ' + namaTampil;
+        document.getElementById('headerUserName').textContent = namaTampil;
+        document.getElementById('headerUserName').title = namaTampil;
+
+        document.getElementById('juriSelectorWrap').style.display = 'none';
+        document.getElementById('userBox').classList.add('show');
+
         setupTabs(res.akses);
       } catch (err) {
         selectJuri.value = selectJuri.dataset.prevJuri || '';
