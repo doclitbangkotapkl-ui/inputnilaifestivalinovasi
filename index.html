@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Input Penilaian Juri - Festival Inovasi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --primary: #991b1b;
+      --primary-dark: #7f1414;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #991b1b 0%, #b91c1c 100%);
+      color: #fff;
+      padding: 20px 26px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(153, 27, 27, 0.2);
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #fecaca;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    select, input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    select:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.12);
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 9px 22px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .peserta-info {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .peserta-info h3 {
+      font-size: 15px;
+      color: #7f1414;
+      margin-bottom: 4px;
+    }
+
+    .peserta-info span {
+      font-size: 12.5px;
+      color: #991b1b;
+      font-weight: 600;
+    }
+
+    .badge {
+      background: #fff;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .kriteria-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .kriteria-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      background: #fafafa;
+    }
+
+    .kriteria-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .kriteria-nama {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .kriteria-bobot {
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .total-box {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .total-box strong {
+      font-size: 24px;
+      color: var(--primary);
+      margin-left: 8px;
+    }
+
+    .btn-save {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-save:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-save:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .alert.success {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .alert.error {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .rekap-mini {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .rekap-mini th {
+      background: #991b1b;
+      color: #fff;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .rekap-mini td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rekap-mini tr:hover {
+      background: #fef2f2;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Form Input Penilaian Juri — Festival Inovasi</h1>
+      <p id="statusMsg">Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian</p>
+    </div>
+
+    <div class="card">
+      <div class="form-grid">
+        <div>
+          <label for="selectJuri">Pilih Nama Juri</label>
+          <select id="selectJuri" onchange="onJuriChange()">
+            <option value="">-- Pilih Juri --</option>
+            <option value="1">1. Dr. Kusuma Adi Achmad, ST.,MT (AKTIF)</option>
+            <option value="2">2. Ahmad Ilyas (AKTIF)</option>
+            <option value="3">3. Junaenah, S.AP., M.M (AKTIF)</option>
+            <option value="4">4. Fahrus Salis (IDE)</option>
+            <option value="5">5. Ade Asep Syarifuddin (IDE)</option>
+            <option value="6">6. Dwi Agustina, S.Pd.,M.Pd.B.I.,PhD (IDE)</option>
+            <option value="7">7. Sevina Mahardani, ST.,MT.,M.Sc (AKTIF & IDE)</option>
+          </select>
+        </div>
+
+        <div id="pesertaSelectorWrap" style="display:none;">
+          <label for="selectPeserta">Pilih Peserta / Inovasi</label>
+          <select id="selectPeserta" onchange="renderFormInput()"></select>
+        </div>
+      </div>
+
+      <div id="tabContainer" class="tab-row" style="display:none;"></div>
+    </div>
+
+    <div id="formCard" class="card" style="display:none;">
+      <div class="peserta-info">
+        <div>
+          <h3 id="infoNamaInovasi">-</h3>
+          <span id="infoInstansi">-</span>
+        </div>
+        <div class="badge" id="infoKategoriBadge">-</div>
+      </div>
+
+      <div id="kriteriaContainer" class="kriteria-list"></div>
+
+      <div class="footer-bar">
+        <div class="total-box">
+          Total Nilai Terbobot: <strong id="liveTotal">0</strong>
+        </div>
+        <button class="btn-save" id="btnSimpan" onclick="submitNilai()">Simpan Nilai</button>
+      </div>
+
+      <div id="alertBox" class="alert"></div>
+    </div>
+
+    <div id="summaryCard" class="card" style="display:none;">
+      <label>Status Penilaian Anda (Klik baris untuk mengedit nilai)</label>
+      <div style="overflow-x:auto;">
+        <table class="rekap-mini">
+          <thead>
+            <tr>
+              <th style="width:45px;">No</th>
+              <th>Nama Inovasi</th>
+              <th>OPD / Sekolah</th>
+              <th>Kategori</th>
+              <th style="text-align:right;">Total Nilai</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT ANDA (/exec)
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxrxwHc3nhHtpl7oy_W9-i2e4iKvtPHSV42Ink61IwVkyDlBz7zwvr3y3614ZvjyfrSfg/exec';
+
+    const KRITERIA_CONFIG = {
+      aktif: [
+        { nama: 'Kebaharuan', bobot: 20, kolom: 'G' },
+        { nama: 'Jumlah pengguna', bobot: 10, kolom: 'H' },
+        { nama: 'Luasan Manfaat', bobot: 10, kolom: 'I' },
+        { nama: 'Replikatif', bobot: 20, kolom: 'J' },
+        { nama: 'Kelayakan keberlanjutan', bobot: 15, kolom: 'K' },
+        { nama: 'Keefektifan', bobot: 15, kolom: 'L' },
+        { nama: 'Pembebanan penerima manfaat', bobot: 10, kolom: 'M' }
+      ],
+      ide: [
+        { nama: 'Kebaharuan', bobot: 10, kolom: 'H' },
+        { nama: 'Kemanfaatan', bobot: 20, kolom: 'I' },
+        { nama: 'Efektivitas', bobot: 20, kolom: 'J' },
+        { nama: 'Kemudahan', bobot: 15, kolom: 'K' },
+        { nama: 'Potensi Keberlanjutan', bobot: 20, kolom: 'L' },
+        { nama: 'Interkoneksi', bobot: 15, kolom: 'M' }
+      ]
+    };
+
+    let currentData = null;
+    let activeTipe = '';
+
+    async function onJuriChange() {
+      const juriId = document.getElementById('selectJuri').value;
+      const statusMsg = document.getElementById('statusMsg');
+      hideAlert();
+
+      if (!juriId) {
+        document.getElementById('pesertaSelectorWrap').style.display = 'none';
+        document.getElementById('tabContainer').style.display = 'none';
+        document.getElementById('formCard').style.display = 'none';
+        document.getElementById('summaryCard').style.display = 'none';
+        statusMsg.textContent = 'Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian';
+        return;
+      }
+
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('summaryCard').style.display = 'none';
+      statusMsg.textContent = 'Memuat data juri dari spreadsheet...';
+
+      try {
+        const url = `${API_URL}?action=getData&juriId=${encodeURIComponent(juriId)}`;
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const res = await resp.json();
+
+        if (!res.success) {
+          throw new Error(res.error || 'Gagal memuat data juri');
+        }
+
+        currentData = res;
+        statusMsg.textContent = 'Terhubung sebagai: ' + res.nama;
+        setupTabs(res.akses);
+      } catch (err) {
+        statusMsg.textContent = 'Gagal memuat data: ' + err.message;
+        alert('Gagal memuat data juri: ' + err.message);
+      }
+    }
+
+    function setupTabs(aksesList) {
+      const tabContainer = document.getElementById('tabContainer');
+      tabContainer.innerHTML = '';
+
+      if (aksesList.length > 1) {
+        tabContainer.style.display = 'flex';
+        aksesList.forEach((tipe, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
+          btn.textContent = 'KATEGORI ' + tipe.toUpperCase();
+          btn.onclick = function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            switchTipe(tipe);
+          };
+          tabContainer.appendChild(btn);
+        });
+      } else {
+        tabContainer.style.display = 'none';
+      }
+
+      switchTipe(aksesList[0]);
+    }
+
+    function switchTipe(tipe) {
+      activeTipe = tipe;
+      const list = currentData.sheets[tipe] || [];
+
+      const selectPeserta = document.getElementById('selectPeserta');
+      selectPeserta.innerHTML = '';
+
+      list.forEach((item, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        const statusTanda = item.total > 0 ? ` [Sudah Dinilai: ${item.total}]` : ' [Belum Dinilai]';
+        opt.textContent = `${item.no}. ${item.namaInovasi} (${item.instansi})${statusTanda}`;
+        selectPeserta.appendChild(opt);
+      });
+
+      document.getElementById('pesertaSelectorWrap').style.display = 'block';
+      document.getElementById('formCard').style.display = 'block';
+      document.getElementById('summaryCard').style.display = 'block';
+
+      renderFormInput();
+      renderSummaryTable();
+    }
+
+    function renderFormInput() {
+      hideAlert();
+      const idx = Number(document.getElementById('selectPeserta').value);
+      const list = currentData.sheets[activeTipe] || [];
+      const peserta = list[idx];
+      if (!peserta) return;
+
+      document.getElementById('infoNamaInovasi').textContent = `${peserta.no}. ${peserta.namaInovasi}`;
+      document.getElementById('infoInstansi').textContent = `${peserta.instansi} • Jadwal: ${peserta.waktu}`;
+      document.getElementById('infoKategoriBadge').textContent = `${activeTipe.toUpperCase()} — ${peserta.kategori}`;
+
+      const kriteriaList = KRITERIA_CONFIG[activeTipe];
+      const container = document.getElementById('kriteriaContainer');
+      container.innerHTML = '';
+
+      kriteriaList.forEach((k, i) => {
+        const val = peserta.skor[i] !== undefined ? peserta.skor[i] : '';
+        const div = document.createElement('div');
+        div.className = 'kriteria-item';
+        div.innerHTML = `
+          <div class="kriteria-head">
+            <span class="kriteria-nama">${k.nama} (Kolom ${k.kolom})</span>
+            <span class="kriteria-bobot">Bobot ${k.bobot}%</span>
+          </div>
+          <input
+            type="number"
+            class="skor-input"
+            data-bobot="${k.bobot}"
+            min="0"
+            max="100"
+            step="0.01"
+            placeholder="Masukkan skor (0 - 100)"
+            value="${val}"
+            oninput="hitungLiveTotal()"
+          >
+        `;
+        container.appendChild(div);
+      });
+
+      hitungLiveTotal();
+    }
+
+    function hitungLiveTotal() {
+      const inputs = document.querySelectorAll('.skor-input');
+      let total = 0;
+      inputs.forEach(inp => {
+        const nilai = Number(inp.value) || 0;
+        const bobot = Number(inp.dataset.bobot) || 0;
+        total += (nilai * bobot) / 100;
+      });
+      document.getElementById('liveTotal').textContent = total.toFixed(2);
+    }
+
+    async function submitNilai() {
+      const idx = Number(document.getElementById('selectPeserta').value);
+      const peserta = currentData.sheets[activeTipe][idx];
+      const inputs = document.querySelectorAll('.skor-input');
+
+      const skorArray = [];
+      let adaKosong = false;
+
+      inputs.forEach(inp => {
+        if (inp.value === '') adaKosong = true;
+        skorArray.push(Number(inp.value) || 0);
+      });
+
+      if (adaKosong && !confirm('Ada indikator yang masih kosong (akan dianggap 0). Lanjutkan simpan?')) {
+        return;
+      }
+
+      const btn = document.getElementById('btnSimpan');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+      hideAlert();
+
+      try {
+        const resp = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'simpanNilai',
+            juriId: currentData.juriId,
+            tipe: activeTipe,
+            rowNumber: peserta.rowNumber,
+            skor: skorArray
+          })
+        });
+
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const res = await resp.json();
+
+        if (res.success) {
+          peserta.skor = skorArray;
+          peserta.total = res.total;
+          showAlert('success', res.message + ' (Total: ' + res.total + ')');
+
+          const selectPeserta = document.getElementById('selectPeserta');
+          selectPeserta.options[idx].textContent =
+            `${peserta.no}. ${peserta.namaInovasi} (${peserta.instansi}) [Sudah Dinilai: ${res.total}]`;
+          renderSummaryTable();
+        } else {
+          showAlert('error', 'Gagal menyimpan: ' + res.error);
+        }
+      } catch (err) {
+        showAlert('error', 'Error koneksi: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan Nilai';
+      }
+    }
+
+    function renderSummaryTable() {
+      const list = currentData.sheets[activeTipe] || [];
+      const tbody = document.getElementById('summaryBody');
+      tbody.innerHTML = '';
+
+      list.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.onclick = function() {
+          document.getElementById('selectPeserta').value = idx;
+          renderFormInput();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        tr.innerHTML = `
+          <td>${item.no}</td>
+          <td><strong>${escapeHtml(item.namaInovasi)}</strong></td>
+          <td>${escapeHtml(item.instansi)}</td>
+          <td>${item.kategori}</td>
+          <td style="text-align:right; font-weight:700; color:#991b1b;">${item.total}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function showAlert(type, msg) {
+      const box = document.getElementById('alertBox');
+      box.className = 'alert ' + type;
+      box.textContent = msg;
+    }
+
+    function hideAlert() {
+      const box = document.getElementById('alertBox');
+      box.className = 'alert';
+      box.textContent = '';
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
