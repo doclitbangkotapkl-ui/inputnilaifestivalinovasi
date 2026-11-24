@@ -189,7 +189,6 @@
       cursor: not-allowed;
     }
 
-    /* SATU BARIS MENDATAR UNTUK SEMUA KRITERIA */
     .kriteria-wrapper {
       overflow-x: auto;
       padding-bottom: 6px;
@@ -395,7 +394,7 @@
 
       <div class="footer-bar">
         <div class="total-box">
-          <span>Total Nilai Terbobot:</span>
+          <span>Estimasi Total Terbobot (Layar):</span>
           <strong id="liveTotal">0.00</strong>
           <span id="unsavedTag" class="unsaved-tag">Belum Disimpan! Klik "Simpan Nilai" dulu</span>
         </div>
@@ -405,7 +404,7 @@
     </div>
 
     <div id="summaryCard" class="card" style="display:none;">
-      <label>Status Penilaian Anda (Klik baris untuk mengedit nilai)</label>
+      <label>Status Input Indikator Anda (Klik baris untuk mengedit nilai)</label>
       <div style="overflow-x:auto;">
         <table class="rekap-mini">
           <thead>
@@ -414,7 +413,7 @@
               <th>Nama Inovasi</th>
               <th>OPD / Sekolah</th>
               <th>Kategori</th>
-              <th style="text-align:right;">Total Nilai</th>
+              <th style="text-align:right;">Indikator Terisi</th>
             </tr>
           </thead>
           <tbody id="summaryBody"></tbody>
@@ -425,7 +424,7 @@
 
   <script>
     // GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT ANDA (/exec)
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxrxwHc3nhHtpl7oy_W9-i2e4iKvtPHSV42Ink61IwVkyDlBz7zwvr3y3614ZvjyfrSfg/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxea5it8SLyJd0o6Kt5mTSYv_Lr6EpqE-G0yw3F53Q2IT31zByKzBiUpDEfamMqFk0Anw/exec';
 
     const KRITERIA_CONFIG = {
       aktif: [
@@ -484,6 +483,13 @@
         return `${match[0]} - ${match[1]}`;
       }
       return String(waktuStr);
+    }
+
+    function formatStatusDropdown(item) {
+      const totalIndikator = KRITERIA_CONFIG[activeTipe].length;
+      const terisi = item.terisiCount || 0;
+      const statusText = terisi > 0 ? `[Terisi ${terisi}/${totalIndikator} indikator]` : '[Belum Diisi]';
+      return `${item.no}. ${item.namaInovasi} (${item.instansi}) ${statusText}`;
     }
 
     function handleDropdownTypeSearch(e) {
@@ -596,8 +602,7 @@
       list.forEach((item, idx) => {
         const opt = document.createElement('option');
         opt.value = idx;
-        const statusTanda = item.total > 0 ? ` [Sudah Dinilai: ${item.total}]` : ' [Belum Dinilai]';
-        opt.textContent = `${item.no}. ${item.namaInovasi} (${item.instansi})${statusTanda}`;
+        opt.textContent = formatStatusDropdown(item);
         selectPeserta.appendChild(opt);
       });
 
@@ -696,13 +701,19 @@
 
       const skorArray = [];
       let adaKosong = false;
+      let terisiCount = 0;
 
       inputs.forEach(inp => {
-        if (inp.value === '') adaKosong = true;
-        skorArray.push(Number(inp.value) || 0);
+        if (inp.value === '') {
+          adaKosong = true;
+          skorArray.push('');
+        } else {
+          skorArray.push(Number(inp.value));
+          terisiCount++;
+        }
       });
 
-      if (adaKosong && !confirm('Ada indikator yang masih kosong (akan dianggap 0). Lanjutkan simpan?')) {
+      if (adaKosong && !confirm('Ada indikator yang masih kosong. Tetap simpan nilai indikator yang sudah diisi?')) {
         return;
       }
 
@@ -729,15 +740,14 @@
 
         if (res.success) {
           peserta.skor = skorArray;
-          peserta.total = res.total;
+          peserta.terisiCount = terisiCount;
           setUnsavedState(false);
-          showAlert('success', res.message + ' (Total: ' + res.total + ')');
+          showAlert('success', res.message);
 
           const selectPeserta = document.getElementById('selectPeserta');
           const targetOpt = [...selectPeserta.options].find(o => Number(o.value) === idx);
           if (targetOpt) {
-            targetOpt.textContent =
-              `${peserta.no}. ${peserta.namaInovasi} (${peserta.instansi}) [Sudah Dinilai: ${res.total}]`;
+            targetOpt.textContent = formatStatusDropdown(peserta);
           }
           renderSummaryTable();
         } else {
@@ -753,10 +763,12 @@
 
     function renderSummaryTable() {
       const list = currentData.sheets[activeTipe] || [];
+      const totalIndikator = KRITERIA_CONFIG[activeTipe].length;
       const tbody = document.getElementById('summaryBody');
       tbody.innerHTML = '';
 
       list.forEach((item, idx) => {
+        const terisi = item.terisiCount || 0;
         const tr = document.createElement('tr');
         tr.onclick = function() {
           if (blockIfUnsaved()) return;
@@ -770,7 +782,7 @@
           <td><strong>${escapeHtml(item.namaInovasi)}</strong></td>
           <td>${escapeHtml(item.instansi)}</td>
           <td>${item.kategori}</td>
-          <td style="text-align:right; font-weight:700; color:#991b1b;">${item.total}</td>
+          <td style="text-align:right; font-weight:700; color:#991b1b;">${terisi} / ${totalIndikator}</td>
         `;
         tbody.appendChild(tr);
       });
