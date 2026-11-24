@@ -133,10 +133,6 @@
       flex-wrap: wrap;
     }
 
-    .peserta-info-left {
-      flex: 1 1 520px;
-    }
-
     .peserta-title-line {
       display: flex;
       align-items: center;
@@ -171,7 +167,7 @@
       background: var(--green);
       color: #fff;
       border: none;
-      padding: 12px 26px;
+      padding: 12px 28px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 700;
@@ -198,15 +194,15 @@
     .kriteria-list {
       display: grid;
       gap: 10px;
-      min-width: 920px;
+      min-width: 960px;
     }
 
     .kriteria-list.cols-7 {
-      grid-template-columns: repeat(7, minmax(120px, 1fr));
+      grid-template-columns: repeat(7, minmax(125px, 1fr));
     }
 
     .kriteria-list.cols-6 {
-      grid-template-columns: repeat(6, minmax(135px, 1fr));
+      grid-template-columns: repeat(6, minmax(140px, 1fr));
     }
 
     .kriteria-item {
@@ -224,29 +220,32 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 6px;
+      gap: 8px;
     }
 
     .kriteria-nama {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text);
       line-height: 1.25;
     }
 
+    /* Tulisan bobot diperbesar */
     .kriteria-bobot {
       background: #fee2e2;
       color: #991b1b;
-      font-size: 10.5px;
+      border: 1px solid #fca5a5;
+      font-size: 13px;
       font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 5px;
+      padding: 4px 9px;
+      border-radius: 6px;
       white-space: nowrap;
     }
 
     .kriteria-item input[type="number"] {
       padding: 8px 10px;
-      font-size: 13.5px;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .footer-bar {
@@ -254,9 +253,9 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
       border-top: 1px solid var(--border);
-      padding-top: 14px;
+      padding-top: 16px;
     }
 
     .total-box {
@@ -311,13 +310,6 @@
       border: 1px solid #fca5a5;
     }
 
-    .alert.warning {
-      display: block;
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-    }
-
     .rekap-mini {
       width: 100%;
       border-collapse: collapse;
@@ -341,13 +333,86 @@
       background: #fef2f2;
       cursor: pointer;
     }
+
+    /* NOTIFIKASI MERAH DI TENGAH LAYAR */
+    .red-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .red-modal-backdrop.show {
+      display: flex;
+    }
+
+    .red-modal-box {
+      background: #b91c1c;
+      color: #ffffff;
+      border: 2px solid #fecaca;
+      border-radius: 14px;
+      max-width: 460px;
+      width: 100%;
+      padding: 24px 26px;
+      text-align: center;
+      box-shadow: 0 18px 40px rgba(127, 20, 20, 0.45);
+      animation: modalPop 0.16s ease-out;
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .red-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .red-modal-msg {
+      font-size: 14px;
+      line-height: 1.45;
+      color: #fef2f2;
+      margin-bottom: 20px;
+    }
+
+    .red-modal-btn {
+      background: #ffffff;
+      color: #991b1b;
+      border: none;
+      padding: 10px 26px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .red-modal-btn:hover {
+      background: #fee2e2;
+    }
   </style>
 </head>
 <body>
+  <!-- MODAL NOTIFIKASI MERAH DI TENGAH -->
+  <div id="redModal" class="red-modal-backdrop" onclick="closeRedModal()">
+    <div class="red-modal-box" onclick="event.stopPropagation()">
+      <div class="red-modal-title">PERHATIAN</div>
+      <div id="redModalMsg" class="red-modal-msg">-</div>
+      <button class="red-modal-btn" onclick="closeRedModal()">Mengerti</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="header">
       <h1>Form Input Penilaian Juri — Festival Inovasi</h1>
-      <p id="statusMsg">Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian</p>
+      <p id="statusMsg">Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian (Nilai 1 - 10)</p>
     </div>
 
     <div class="card">
@@ -377,15 +442,13 @@
 
     <div id="formCard" class="card" style="display:none;">
       <div class="peserta-info">
-        <div class="peserta-info-left">
+        <div>
           <div class="peserta-title-line">
             <h3 id="infoNamaInovasi">-</h3>
             <span class="badge" id="infoKategoriBadge">-</span>
           </div>
           <span id="infoInstansi">-</span>
         </div>
-
-        <button class="btn-save" id="btnSimpan" onclick="submitNilai()">Simpan Nilai</button>
       </div>
 
       <div class="kriteria-wrapper">
@@ -398,6 +461,8 @@
           <strong id="liveTotal">0.00</strong>
           <span id="unsavedTag" class="unsaved-tag">Belum Disimpan! Klik "Simpan Nilai" dulu</span>
         </div>
+
+        <button class="btn-save" id="btnSimpan" onclick="submitNilai()">Simpan Nilai</button>
       </div>
 
       <div id="alertBox" class="alert"></div>
@@ -425,6 +490,9 @@
   <script>
     // GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT ANDA (/exec)
     const API_URL = 'https://script.google.com/macros/s/AKfycbxea5it8SLyJd0o6Kt5mTSYv_Lr6EpqE-G0yw3F53Q2IT31zByKzBiUpDEfamMqFk0Anw/exec';
+
+    const MIN_NILAI = 1;
+    const MAX_NILAI = 10;
 
     const KRITERIA_CONFIG = {
       aktif: [
@@ -460,6 +528,15 @@
       }
     });
 
+    function showRedModal(msg) {
+      document.getElementById('redModalMsg').textContent = msg;
+      document.getElementById('redModal').classList.add('show');
+    }
+
+    function closeRedModal() {
+      document.getElementById('redModal').classList.remove('show');
+    }
+
     function setUnsavedState(dirty) {
       hasUnsavedChanges = dirty;
       const tag = document.getElementById('unsavedTag');
@@ -471,8 +548,7 @@
     function blockIfUnsaved(customMsg) {
       if (!hasUnsavedChanges) return false;
       const msg = customMsg || 'Nilai pada inovasi ini belum disimpan! Klik tombol "Simpan Nilai" terlebih dahulu sebelum pindah ke inovasi lain.';
-      showAlert('warning', msg);
-      alert(msg);
+      showRedModal(msg);
       return true;
     }
 
@@ -534,7 +610,7 @@
         document.getElementById('tabContainer').style.display = 'none';
         document.getElementById('formCard').style.display = 'none';
         document.getElementById('summaryCard').style.display = 'none';
-        statusMsg.textContent = 'Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian';
+        statusMsg.textContent = 'Pilih nama juri untuk memuat daftar peserta dan kolom indikator penilaian (Nilai 1 - 10)';
         return;
       }
 
@@ -559,7 +635,7 @@
       } catch (err) {
         selectJuri.value = selectJuri.dataset.prevJuri || '';
         statusMsg.textContent = 'Gagal memuat data: ' + err.message;
-        alert('Gagal memuat data juri: ' + err.message);
+        showRedModal('Gagal memuat data juri: ' + err.message);
       }
     }
 
@@ -661,12 +737,12 @@
             type="number"
             class="skor-input"
             data-bobot="${k.bobot}"
-            min="0"
-            max="100"
+            min="${MIN_NILAI}"
+            max="${MAX_NILAI}"
             step="0.01"
-            placeholder="0 - 100"
+            placeholder="1 - 10"
             value="${val}"
-            oninput="onSkorInputChange()"
+            oninput="onSkorInputChange(this)"
           >
         `;
         container.appendChild(div);
@@ -675,7 +751,19 @@
       hitungLiveTotal();
     }
 
-    function onSkorInputChange() {
+    function onSkorInputChange(inputEl) {
+      if (inputEl && inputEl.value !== '') {
+        const num = Number(inputEl.value);
+        if (!isNaN(num)) {
+          if (num > MAX_NILAI) {
+            inputEl.value = MAX_NILAI;
+            showRedModal('Rentang nilai hanya 1 - 10. Nilai otomatis disesuaikan ke 10.');
+          } else if (num < MIN_NILAI) {
+            inputEl.value = MIN_NILAI;
+            showRedModal('Rentang nilai hanya 1 - 10. Nilai otomatis disesuaikan ke 1.');
+          }
+        }
+      }
       setUnsavedState(true);
       hitungLiveTotal();
     }
@@ -701,6 +789,7 @@
 
       const skorArray = [];
       let adaKosong = false;
+      let adaDiluarRentang = false;
       let terisiCount = 0;
 
       inputs.forEach(inp => {
@@ -708,12 +797,22 @@
           adaKosong = true;
           skorArray.push('');
         } else {
-          skorArray.push(Number(inp.value));
+          const num = Number(inp.value);
+          if (isNaN(num) || num < MIN_NILAI || num > MAX_NILAI) {
+            adaDiluarRentang = true;
+          }
+          skorArray.push(num);
           terisiCount++;
         }
       });
 
-      if (adaKosong && !confirm('Ada indikator yang masih kosong. Tetap simpan nilai indikator yang sudah diisi?')) {
+      if (adaDiluarRentang) {
+        showRedModal('Setiap nilai indikator harus berada pada rentang 1 sampai 10.');
+        return;
+      }
+
+      if (adaKosong) {
+        showRedModal('Harap isi semua indikator (rentang nilai 1 - 10) sebelum menyimpan nilai.');
         return;
       }
 
@@ -751,9 +850,11 @@
           }
           renderSummaryTable();
         } else {
+          showRedModal('Gagal menyimpan: ' + res.error);
           showAlert('error', 'Gagal menyimpan: ' + res.error);
         }
       } catch (err) {
+        showRedModal('Error koneksi: ' + err.message);
         showAlert('error', 'Error koneksi: ' + err.message);
       } finally {
         btn.disabled = false;
@@ -795,16 +896,4 @@
     }
 
     function hideAlert() {
-      const box = document.getElementById('alertBox');
-      box.className = 'alert';
-      box.textContent = '';
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-  </script>
-</body>
-</html>
+      const box = document.getElement
