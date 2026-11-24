@@ -2,12 +2,14 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Form Input Penilaian Juri - Festival Inovasi</title>
+  <title>Form Input Penilaian Juri — Festival Inovasi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
       --primary: #991b1b;
       --primary-dark: #7f1414;
+      --green: #0f7629;
+      --green-hover: #0b5d20;
       --bg: #f8fafc;
       --card: #ffffff;
       --border: #e2e8f0;
@@ -39,7 +41,7 @@
       color: #fff;
       padding: 20px 28px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       box-shadow: 0 4px 12px rgba(153, 27, 27, 0.2);
     }
 
@@ -58,8 +60,8 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px 24px;
-      margin-bottom: 20px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
 
@@ -72,7 +74,7 @@
 
     label {
       display: block;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 6px;
@@ -80,7 +82,7 @@
       letter-spacing: 0.4px;
     }
 
-    select, input[type="number"], input[type="text"] {
+    select, input[type="number"] {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid #cbd5e1;
@@ -90,12 +92,7 @@
       color: var(--text);
     }
 
-    .search-input {
-      margin-bottom: 8px;
-      background-color: #fffafa;
-    }
-
-    select:focus, input[type="number"]:focus, input[type="text"]:focus {
+    select:focus, input[type="number"]:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.12);
@@ -104,16 +101,16 @@
     .tab-row {
       display: flex;
       gap: 8px;
-      margin-top: 16px;
+      margin-top: 14px;
     }
 
     .tab-btn {
-      padding: 9px 22px;
+      padding: 8px 20px;
       border: 1px solid #cbd5e1;
       background: #fff;
       border-radius: 8px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12.5px;
       cursor: pointer;
     }
 
@@ -126,20 +123,32 @@
     .peserta-info {
       background: #fef2f2;
       border: 1px solid #fecaca;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 14px 18px;
       margin-bottom: 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
       flex-wrap: wrap;
-      gap: 10px;
+    }
+
+    .peserta-info-left {
+      flex: 1 1 520px;
+    }
+
+    .peserta-title-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
     }
 
     .peserta-info h3 {
       font-size: 15px;
       color: #7f1414;
-      margin-bottom: 4px;
+      font-weight: 700;
     }
 
     .peserta-info span {
@@ -152,104 +161,27 @@
       background: #fff;
       border: 1px solid #fca5a5;
       color: #991b1b;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .kriteria-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .kriteria-item {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      background: #fafafa;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .kriteria-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .kriteria-nama {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .kriteria-bobot {
-      background: #fee2e2;
-      color: #991b1b;
+      padding: 2px 9px;
+      border-radius: 6px;
       font-size: 11px;
       font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-
-    .footer-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 14px;
-      border-top: 1px solid var(--border);
-      padding-top: 16px;
-    }
-
-    .total-box {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .total-box strong {
-      font-size: 24px;
-      color: var(--primary);
-      margin-left: 8px;
-    }
-
-    .unsaved-tag {
-      display: none;
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-left: 10px;
-    }
-
-    .unsaved-tag.show {
-      display: inline-block;
     }
 
     .btn-save {
-      background: var(--primary);
+      background: var(--green);
       color: #fff;
       border: none;
-      padding: 12px 28px;
+      padding: 12px 26px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       transition: background 0.2s;
+      white-space: nowrap;
     }
 
     .btn-save:hover {
-      background: var(--primary-dark);
+      background: var(--green-hover);
     }
 
     .btn-save:disabled {
@@ -257,12 +189,112 @@
       cursor: not-allowed;
     }
 
-    .alert {
-      padding: 12px 16px;
-      border-radius: 8px;
+    /* SATU BARIS MENDATAR UNTUK SEMUA KRITERIA */
+    .kriteria-wrapper {
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+
+    .kriteria-list {
+      display: grid;
+      gap: 10px;
+      min-width: 920px;
+    }
+
+    .kriteria-list.cols-7 {
+      grid-template-columns: repeat(7, minmax(120px, 1fr));
+    }
+
+    .kriteria-list.cols-6 {
+      grid-template-columns: repeat(6, minmax(135px, 1fr));
+    }
+
+    .kriteria-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .kriteria-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .kriteria-nama {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .kriteria-bobot {
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .kriteria-item input[type="number"] {
+      padding: 8px 10px;
       font-size: 13.5px;
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .total-box {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .total-box strong {
+      font-size: 22px;
+      color: var(--primary);
+    }
+
+    .unsaved-tag {
+      display: none;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .unsaved-tag.show {
+      display: inline-block;
+    }
+
+    .alert {
+      padding: 11px 16px;
+      border-radius: 8px;
+      font-size: 13px;
       font-weight: 600;
-      margin-top: 14px;
+      margin-top: 12px;
       display: none;
     }
 
@@ -336,15 +368,8 @@
         </div>
 
         <div id="pesertaSelectorWrap" style="display:none;">
-          <label for="selectPeserta">Pilih Peserta / Inovasi</label>
-          <input
-            type="text"
-            id="searchPeserta"
-            class="search-input"
-            placeholder="Cari nama inovasi, instansi, atau nomor..."
-            oninput="filterPesertaDropdown()"
-          >
-          <select id="selectPeserta" onchange="onPesertaSelectChange()"></select>
+          <label for="selectPeserta">Pilih Peserta / Inovasi (Klik lalu ketik untuk mencari)</label>
+          <select id="selectPeserta" onkeydown="handleDropdownTypeSearch(event)" onchange="onPesertaSelectChange()"></select>
         </div>
       </div>
 
@@ -353,21 +378,27 @@
 
     <div id="formCard" class="card" style="display:none;">
       <div class="peserta-info">
-        <div>
-          <h3 id="infoNamaInovasi">-</h3>
+        <div class="peserta-info-left">
+          <div class="peserta-title-line">
+            <h3 id="infoNamaInovasi">-</h3>
+            <span class="badge" id="infoKategoriBadge">-</span>
+          </div>
           <span id="infoInstansi">-</span>
         </div>
-        <div class="badge" id="infoKategoriBadge">-</div>
+
+        <button class="btn-save" id="btnSimpan" onclick="submitNilai()">Simpan Nilai</button>
       </div>
 
-      <div id="kriteriaContainer" class="kriteria-list"></div>
+      <div class="kriteria-wrapper">
+        <div id="kriteriaContainer" class="kriteria-list"></div>
+      </div>
 
       <div class="footer-bar">
         <div class="total-box">
-          Total Nilai Terbobot: <strong id="liveTotal">0</strong>
+          <span>Total Nilai Terbobot:</span>
+          <strong id="liveTotal">0.00</strong>
           <span id="unsavedTag" class="unsaved-tag">Belum Disimpan! Klik "Simpan Nilai" dulu</span>
         </div>
-        <button class="btn-save" id="btnSimpan" onclick="submitNilai()">Simpan Nilai</button>
       </div>
 
       <div id="alertBox" class="alert"></div>
@@ -394,7 +425,7 @@
 
   <script>
     // GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT ANDA (/exec)
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxrxwHc3nhHtpl7oy_W9-i2e4iKvtPHSV42Ink61IwVkyDlBz7zwvr3y3614ZvjyfrSfg/exec';
+    const API_URL = 'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT_ANDA';
 
     const KRITERIA_CONFIG = {
       aktif: [
@@ -420,7 +451,8 @@
     let activeTipe = '';
     let activePesertaIdx = 0;
     let hasUnsavedChanges = false;
-    let lastSearchKeyword = '';
+    let typeBuffer = '';
+    let typeTimer = null;
 
     window.addEventListener('beforeunload', function(e) {
       if (hasUnsavedChanges) {
@@ -452,6 +484,28 @@
         return `${match[0]} - ${match[1]}`;
       }
       return String(waktuStr);
+    }
+
+    function handleDropdownTypeSearch(e) {
+      if (e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        blockIfUnsaved();
+        return;
+      }
+
+      clearTimeout(typeTimer);
+      typeBuffer += e.key.toLowerCase();
+      typeTimer = setTimeout(() => { typeBuffer = ''; }, 900);
+
+      const select = document.getElementById('selectPeserta');
+      const matched = [...select.options].find(opt => opt.text.toLowerCase().includes(typeBuffer));
+      if (matched) {
+        e.preventDefault();
+        select.value = matched.value;
+        activePesertaIdx = Number(matched.value);
+        renderFormInput();
+      }
     }
 
     async function onJuriChange() {
@@ -512,7 +566,6 @@
         aksesList.forEach((tipe, idx) => {
           const btn = document.createElement('button');
           btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
-          btn.dataset.tipe = tipe;
           btn.textContent = 'KATEGORI ' + tipe.toUpperCase();
           btn.onclick = function() {
             if (tipe === activeTipe) return;
@@ -535,54 +588,12 @@
     function switchTipe(tipe) {
       activeTipe = tipe;
       activePesertaIdx = 0;
-      lastSearchKeyword = '';
-      document.getElementById('searchPeserta').value = '';
-      populatePesertaDropdown('', false);
 
-      document.getElementById('pesertaSelectorWrap').style.display = 'block';
-      document.getElementById('formCard').style.display = 'block';
-      document.getElementById('summaryCard').style.display = 'block';
-
-      renderFormInput();
-      renderSummaryTable();
-    }
-
-    function filterPesertaDropdown() {
-      const searchInput = document.getElementById('searchPeserta');
-      if (blockIfUnsaved('Nilai inovasi saat ini belum disimpan! Simpan nilai dulu sebelum mencari/mengganti inovasi.')) {
-        searchInput.value = lastSearchKeyword;
-        return;
-      }
-
-      const keyword = searchInput.value.trim().toLowerCase();
-      lastSearchKeyword = searchInput.value;
-      populatePesertaDropdown(keyword, false);
-    }
-
-    function populatePesertaDropdown(keyword, keepSelectionIfPossible = false) {
-      const list = currentData.sheets[activeTipe] || [];
+      const list = currentData.sheets[tipe] || [];
       const selectPeserta = document.getElementById('selectPeserta');
-      const prevValue = keepSelectionIfPossible ? String(activePesertaIdx) : '';
-
       selectPeserta.innerHTML = '';
 
-      const filtered = list
-        .map((item, idx) => ({ item, idx }))
-        .filter(({ item }) => {
-          if (!keyword) return true;
-          const haystack = `${item.no} ${item.namaInovasi} ${item.instansi} ${item.kategori}`.toLowerCase();
-          return haystack.includes(keyword);
-        });
-
-      if (filtered.length === 0) {
-        const opt = document.createElement('option');
-        opt.value = '';
-        opt.textContent = '-- Tidak ada inovasi yang cocok dengan pencarian --';
-        selectPeserta.appendChild(opt);
-        return;
-      }
-
-      filtered.forEach(({ item, idx }) => {
+      list.forEach((item, idx) => {
         const opt = document.createElement('option');
         opt.value = idx;
         const statusTanda = item.total > 0 ? ` [Sudah Dinilai: ${item.total}]` : ' [Belum Dinilai]';
@@ -590,13 +601,12 @@
         selectPeserta.appendChild(opt);
       });
 
-      if (keepSelectionIfPossible && [...selectPeserta.options].some(o => o.value === prevValue)) {
-        selectPeserta.value = prevValue;
-      } else {
-        selectPeserta.selectedIndex = 0;
-        activePesertaIdx = Number(selectPeserta.value);
-        renderFormInput();
-      }
+      document.getElementById('pesertaSelectorWrap').style.display = 'block';
+      document.getElementById('formCard').style.display = 'block';
+      document.getElementById('summaryCard').style.display = 'block';
+
+      renderFormInput();
+      renderSummaryTable();
     }
 
     function onPesertaSelectChange() {
@@ -630,6 +640,7 @@
 
       const kriteriaList = KRITERIA_CONFIG[activeTipe];
       const container = document.getElementById('kriteriaContainer');
+      container.className = 'kriteria-list ' + (kriteriaList.length === 7 ? 'cols-7' : 'cols-6');
       container.innerHTML = '';
 
       kriteriaList.forEach((k, i) => {
@@ -648,7 +659,7 @@
             min="0"
             max="100"
             step="0.01"
-            placeholder="Masukkan skor (0 - 100)"
+            placeholder="0 - 100"
             value="${val}"
             oninput="onSkorInputChange()"
           >
@@ -749,9 +760,6 @@
         const tr = document.createElement('tr');
         tr.onclick = function() {
           if (blockIfUnsaved()) return;
-          document.getElementById('searchPeserta').value = '';
-          lastSearchKeyword = '';
-          populatePesertaDropdown('', false);
           document.getElementById('selectPeserta').value = String(idx);
           activePesertaIdx = idx;
           renderFormInput();
